@@ -18,7 +18,7 @@ public class Controller {
     private SourceService sourceService;
     @GetMapping("/ololo")
     public String getStatus(){
-        return "ololo";
+        return "Ololo, I'm successful cucumber!";
     }
 
     @GetMapping("/sources")
