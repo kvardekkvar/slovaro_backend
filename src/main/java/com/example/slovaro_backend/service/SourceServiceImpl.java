@@ -1,5 +1,6 @@
 package com.example.slovaro_backend.service;
 
+import com.example.slovaro_backend.dao.SourceDAO;
 import com.example.slovaro_backend.entity.Source;
 import com.example.slovaro_backend.entity.User;
 import org.hibernate.Session;
@@ -15,21 +16,15 @@ import java.util.List;
 public class SourceServiceImpl implements SourceService {
 
     @Autowired
-    SessionFactory factory;
-
+    SourceDAO sourceDAO;
 
     @Override
     public List<Source> getSources() {
-        try (Session session = factory.openSession()) {
-            return session.createQuery("from Source", Source.class).getResultList();
-        }
+        return sourceDAO.showAll();
     }
 
     @Override
-    public Source getSourceById(int id) {
-
-        try (Session session = factory.openSession()) {
-            return session.get(Source.class, id);
-        }
+    public Source getSourceById(long id) {
+        return sourceDAO.findById(id);
     }
 }
