@@ -1,10 +1,9 @@
 package com.example.slovaro_backend.service;
 
 import com.example.slovaro_backend.entity.Source;
-import com.example.slovaro_backend.entity.User;
+import com.example.slovaro_backend.entity.Word;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
@@ -12,24 +11,22 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class SourceServiceImpl implements SourceService {
+public class WordServiceImpl implements WordService {
+    @Autowired
+    Environment env;
 
     @Autowired
     SessionFactory factory;
-
-
-    @Override
-    public List<Source> getSources() {
-        try (Session session = factory.openSession()) {
-            return session.createQuery("from Source", Source.class).getResultList();
-        }
+    public WordServiceImpl(Environment env) {
+        this.env = env;
     }
 
-    @Override
-    public Source getSourceById(int id) {
+    public List<Word> getWords(Source source) {
 
         try (Session session = factory.openSession()) {
-            return session.get(Source.class, id);
+            return session.createQuery("from Word where sourceId = :sourceId", Word.class)
+                    .setParameter("sourceId", source.getId())
+                    .getResultList();
         }
     }
 }

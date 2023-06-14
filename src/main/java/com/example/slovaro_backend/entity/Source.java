@@ -12,9 +12,10 @@ public class Source {
     int id;
 
 
-    @ManyToOne()
-    @JoinColumn(name="userid")
-    User userId;
+    //@ManyToOne()
+    //@JoinColumn(name="userid")
+    @Column(name="userid")
+    int userId;
     @Column(name = "name")
     String name;
 
@@ -26,11 +27,11 @@ public class Source {
         this.id = id;
     }
 
-    public User getUserId() {
+    public int getUserId() {
         return userId;
     }
 
-    public void setUserId(User userId) {
+    public void setUserId(int userId) {
         this.userId = userId;
     }
 

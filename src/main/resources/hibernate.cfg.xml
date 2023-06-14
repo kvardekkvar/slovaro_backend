@@ -13,6 +13,6 @@
         <property name = "hibernate.connection.url">
             jdbc:postgresql://178.209.46.147:5432/dict
         </property>
-
+        <property name="hibernate.show_sql">true</property>
     </session-factory>
 </hibernate-configuration>
