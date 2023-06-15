@@ -13,6 +13,7 @@ public class SourceDaoImpl implements SourceDAO {
 
     @Autowired
     SessionFactory sessionFactory;
+
     @Override
     public Source findById(long id) {
         try (Session session = sessionFactory.openSession()) {
@@ -24,6 +25,14 @@ public class SourceDaoImpl implements SourceDAO {
     public List<Source> showAll() {
         try (Session session = sessionFactory.openSession()) {
             return session.createQuery("from Source", Source.class).getResultList();
+        }
+    }
+
+    @Override
+    public Source add(Source source) {
+        try (Session session = sessionFactory.openSession()) {
+            session.save(source);
+            return source;
         }
     }
 }

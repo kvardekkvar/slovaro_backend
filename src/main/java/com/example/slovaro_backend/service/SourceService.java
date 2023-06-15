@@ -9,4 +9,6 @@ public interface SourceService {
     List<Source> getSources();
 
     Source getSourceById(long id);
+
+    Source addSource(Source source);
 }

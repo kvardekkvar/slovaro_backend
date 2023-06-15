@@ -6,6 +6,9 @@ import com.example.slovaro_backend.service.SourceService;
 import com.example.slovaro_backend.service.SourceServiceImpl;
 import com.example.slovaro_backend.service.WordService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -19,22 +22,32 @@ public class Controller {
     private SourceService sourceService;
     @Autowired
     private WordService wordService;
+
     @GetMapping("/ololo")
-    public String getStatus(){
+    public String getStatus() {
         return "Ololo, I'm successful cucumber!";
     }
 
     @GetMapping("/sources")
-    public List<Source> getSources(){
+    public List<Source> getSources() {
         return sourceService.getSources();
     }
+
     @GetMapping("/source")
-    public Source getSources(@RequestParam int id){
+    public Source getSources(@RequestParam int id) {
         return sourceService.getSourceById(id);
     }
 
+    @PostMapping("/source")
+    public ResponseEntity<Source> addSource(@RequestBody Source source) {
+        if (source != null && (source.getUserId() != null) && (source.getName() != null) && !source.getName().isBlank()) {
+            return new ResponseEntity<>(sourceService.addSource(source), HttpStatus.CREATED);
+        }
+        return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+    }
+
     @GetMapping("/words")
-    public List<Word> getWords(@RequestParam int sourceId){
+    public List<Word> getWords(@RequestParam int sourceId) {
         Source source = sourceService.getSourceById(sourceId);
         return wordService.getWords(source);
     }

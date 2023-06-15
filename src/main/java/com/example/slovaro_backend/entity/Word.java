@@ -8,38 +8,38 @@ public class Word {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int id;
+    Long id;
 
     @Column(name = "userid")
-    int userId;
+    Long userId;
 
     @Column(name = "sourceid")
-    int sourceId;
+    Long sourceId;
 
     @Column(name = "word")
     String content;
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public int getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 
-    public int getSourceId() {
+    public Long getSourceId() {
         return sourceId;
     }
 
-    public void setSourceId(int sourceId) {
+    public void setSourceId(Long sourceId) {
         this.sourceId = sourceId;
     }
 

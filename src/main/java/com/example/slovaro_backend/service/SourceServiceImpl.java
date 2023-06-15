@@ -27,4 +27,9 @@ public class SourceServiceImpl implements SourceService {
     public Source getSourceById(long id) {
         return sourceDAO.findById(id);
     }
+
+    @Override
+    public Source addSource(Source source){
+        return sourceDAO.add(source);
+    }
 }

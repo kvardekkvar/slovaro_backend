@@ -9,4 +9,6 @@ public interface SourceDAO {
     Source findById(long id);
 
     List<Source> showAll();
+
+    Source add(Source source);
 }
