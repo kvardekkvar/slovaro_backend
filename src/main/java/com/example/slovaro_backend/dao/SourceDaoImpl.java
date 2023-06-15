@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class SourceDaoImpl implements SourceDAO {
@@ -15,9 +16,11 @@ public class SourceDaoImpl implements SourceDAO {
     SessionFactory sessionFactory;
 
     @Override
-    public Source findById(long id) {
+    public Optional<Source> findById(long id) {
+
         try (Session session = sessionFactory.openSession()) {
-            return session.get(Source.class, id);
+            Source source = session.get(Source.class, id);
+            return Optional.ofNullable(source);
         }
     }
 
@@ -29,10 +32,10 @@ public class SourceDaoImpl implements SourceDAO {
     }
 
     @Override
-    public Source add(Source source) {
+    public Optional<Source> add(Source source) {
         try (Session session = sessionFactory.openSession()) {
-            session.save(source);
-            return source;
+            session.persist(source);
+            return Optional.ofNullable(source);
         }
     }
 }
