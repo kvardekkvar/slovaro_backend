@@ -12,4 +12,6 @@ public interface SourceDAO {
     List<Source> showAll();
 
     Optional<Source> add(Source source);
+
+    boolean checkIfAlreadyExists(Source source);
 }

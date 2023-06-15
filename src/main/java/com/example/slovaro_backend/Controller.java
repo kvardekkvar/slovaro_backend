@@ -2,6 +2,7 @@ package com.example.slovaro_backend;
 
 import com.example.slovaro_backend.entity.Source;
 import com.example.slovaro_backend.entity.Word;
+import com.example.slovaro_backend.exception.RequiredFieldMissingException;
 import com.example.slovaro_backend.service.SourceService;
 import com.example.slovaro_backend.service.SourceServiceImpl;
 import com.example.slovaro_backend.service.WordService;
@@ -33,17 +34,17 @@ public class Controller {
         return sourceService.getSources();
     }
 
-    @GetMapping("/source")
-    public Source getSources(@RequestParam int id) {
+    @GetMapping("/sources/{id}")
+    public Source getSources(@PathVariable int id) {
         return sourceService.getSourceById(id);
     }
 
-    @PostMapping("/source")
+    @PostMapping("/sources")
     public ResponseEntity<Source> addSource(@RequestBody Source source) {
         if (source != null && (source.getUserId() != null) && (source.getName() != null) && !source.getName().isBlank()) {
             return new ResponseEntity<>(sourceService.addSource(source), HttpStatus.CREATED);
         }
-        return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        throw new RequiredFieldMissingException("Required fields missing");
     }
 
     @GetMapping("/words")
@@ -51,5 +52,4 @@ public class Controller {
         Source source = sourceService.getSourceById(sourceId);
         return wordService.getWords(source);
     }
-
 }
