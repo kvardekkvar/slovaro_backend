@@ -8,5 +8,7 @@ import java.util.List;
 
 public interface WordService {
 
-List<Word> getWords(Source source);
+    List<Word> getWords(Source source);
+
+    Word addWord(Word word);
 }

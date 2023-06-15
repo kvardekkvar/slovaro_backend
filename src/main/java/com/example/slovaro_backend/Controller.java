@@ -35,7 +35,7 @@ public class Controller {
     }
 
     @GetMapping("/sources/{id}")
-    public Source getSources(@PathVariable int id) {
+    public Source getSources(@PathVariable Long id) {
         return sourceService.getSourceById(id);
     }
 
@@ -43,13 +43,25 @@ public class Controller {
     public ResponseEntity<Source> addSource(@RequestBody Source source) {
         if (source != null && (source.getUserId() != null) && (source.getName() != null) && !source.getName().isBlank()) {
             return new ResponseEntity<>(sourceService.addSource(source), HttpStatus.CREATED);
+        } else {
+            throw new RequiredFieldMissingException("Required fields missing");
         }
-        throw new RequiredFieldMissingException("Required fields missing");
     }
 
     @GetMapping("/words")
-    public List<Word> getWords(@RequestParam int sourceId) {
+    public List<Word> getWords(@RequestParam Long sourceId) {
         Source source = sourceService.getSourceById(sourceId);
         return wordService.getWords(source);
     }
+
+    @PostMapping("/words")
+    public ResponseEntity<Word> addWord(@RequestBody Word word) {
+        if (word != null && word.getContent() != null && word.getUserId() != null && word.getSourceId() != null) {
+            return new ResponseEntity<>(wordService.addWord(word), HttpStatus.CREATED);
+        } else {
+            throw new RequiredFieldMissingException("Required fields missing");
+        }
+    }
 }
+
+

@@ -41,10 +41,12 @@ public class SourceDaoImpl implements SourceDAO {
             transaction.commit();
         }
         if (source.getId() == null) {
-            source = null;
+            return Optional.empty();
+        } else {
+            return Optional.of(source);
         }
-        return Optional.ofNullable(source);
     }
+
 
     @Override
     public boolean checkIfAlreadyExists(Source source) {
