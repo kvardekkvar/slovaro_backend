@@ -61,7 +61,7 @@ public class Controller {
     }
 
     @DeleteMapping("/sources/{id}")
-    public ResponseEntity<Object> deleteSource(@PathVariable long id){
+    public ResponseEntity<Object> deleteSource(@PathVariable long id) {
         sourceService.deleteSourceById(id);
         return new ResponseEntity<>(null, HttpStatus.OK);
     }
@@ -81,6 +81,24 @@ public class Controller {
         }
     }
 
+    @PutMapping("/words/{id}")
+    public ResponseEntity<Object> updateWord(@PathVariable long id, @RequestBody Word word) {
+        assert id == word.getId();
+
+        if (word != null && word.getContent() != null && word.getUserId() != null && word.getSourceId() != null) {
+            wordService.updateWord(word);
+            return new ResponseEntity<>(null, HttpStatus.OK);
+        } else {
+            throw new RequiredFieldMissingException("Required fields missing");
+        }
+
+    }
+
+    @DeleteMapping("/words/{id}")
+    public ResponseEntity<Object> deleteWord(@PathVariable long id){
+        wordService.deleteWordById(id);
+        return new ResponseEntity<>(null, HttpStatus.OK);
+    }
 }
 
 

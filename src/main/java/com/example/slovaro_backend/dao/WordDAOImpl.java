@@ -5,6 +5,7 @@ import com.example.slovaro_backend.entity.Word;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.query.MutationQuery;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -30,7 +31,7 @@ public class WordDAOImpl implements WordDAO {
 
     @Override
     public Optional<Word> add(Word word) {
-        try(Session session = sessionFactory.openSession()){
+        try (Session session = sessionFactory.openSession()) {
             Transaction transaction = session.beginTransaction();
             session.persist(word);
             transaction.commit();
@@ -54,5 +55,36 @@ public class WordDAOImpl implements WordDAO {
             return results.size() > 0;
         }
 
+    }
+
+    @Override
+    public Optional<Word> findById(Long id) {
+        Word word = null;
+        try (Session session = sessionFactory.openSession()) {
+            Transaction transaction = session.beginTransaction();
+            word = session.get(Word.class, id);
+            transaction.commit();
+        }
+        return Optional.ofNullable(word);
+    }
+
+    @Override
+    public void update(Word newWord) {
+        try (Session session = sessionFactory.openSession()) {
+            Transaction transaction = session.beginTransaction();
+            session.merge(newWord);
+            transaction.commit();
+        }
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        try (Session session = sessionFactory.openSession()) {
+            Transaction transaction = session.beginTransaction();
+            MutationQuery query = session.createMutationQuery("delete from Word where id = :id")
+                    .setParameter("id", id);
+            query.executeUpdate();
+            transaction.commit();
+        }
     }
 }

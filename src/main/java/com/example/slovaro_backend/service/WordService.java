@@ -11,4 +11,8 @@ public interface WordService {
     List<Word> getWords(Source source);
 
     Word addWord(Word word);
+
+    void updateWord(Word word);
+
+    void deleteWordById(Long id);
 }

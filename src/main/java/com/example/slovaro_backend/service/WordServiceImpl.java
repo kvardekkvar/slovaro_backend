@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class WordServiceImpl implements WordService {
@@ -33,6 +34,33 @@ public class WordServiceImpl implements WordService {
             throw new DuplicateWordException(sourceId);
         }
         return wordDAO.add(word).orElseThrow(() -> new DatabaseException("Ошибка базы данных. Слово не было добавлено."));
+    }
+
+    @Override
+    public void updateWord(Word newWord) {
+        Long sourceId = newWord.getSourceId();
+        Long wordId = newWord.getId();
+        sourceService.getSourceById(sourceId);
+        Word oldWord = wordDAO.findById(wordId).orElseThrow(() -> new RuntimeException("Слово не найдено."));
+
+        if (!Objects.equals(oldWord.getUserId(), newWord.getUserId()) || !Objects.equals(oldWord.getSourceId(), newWord.getSourceId()) )
+        {
+            throw new RuntimeException("Только содержание слова и определение слова можно изменять.");
+        } else{
+            wordDAO.update(newWord);
+        }
+
+
+
+    }
+
+    @Override
+    public void deleteWordById(Long id) {
+        if(wordDAO.findById(id).isPresent()){
+            wordDAO.deleteById(id);
+        } else {
+            throw new RuntimeException("Слово не найдено.");
+        }
     }
 }
 
