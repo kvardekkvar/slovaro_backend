@@ -14,4 +14,8 @@ public interface SourceDAO {
     Optional<Source> add(Source source);
 
     boolean checkIfAlreadyExists(Source source);
+
+    void update(Source newSource);
+
+    void deleteById(Long id);
 }

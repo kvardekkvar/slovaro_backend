@@ -1,21 +1,20 @@
 package com.example.slovaro_backend.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
-@Table(name="sources")
+@Table(name = "sources")
 public class Source {
 
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-
-
-    //@ManyToOne()
-    //@JoinColumn(name="userid")
-    @Column(name="userid")
+    @NotNull
+    @Column(name = "userid")
     Long userId;
+    @NotNull
     @Column(name = "name")
     String name;
 

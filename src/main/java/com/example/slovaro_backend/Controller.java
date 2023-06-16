@@ -48,6 +48,24 @@ public class Controller {
         }
     }
 
+    @PutMapping("/sources/{id}")
+    public ResponseEntity<Object> changeSourceName(@PathVariable long id, @RequestBody Source source) {
+        assert id == source.getId();
+
+        if (source != null && source.getId() != null && source.getUserId() != null && source.getName() != null && !source.getName().isBlank()) {
+            sourceService.updateSource(source);
+            return new ResponseEntity<>(null, HttpStatus.OK);
+        } else {
+            throw new RequiredFieldMissingException("Required fields missing");
+        }
+    }
+
+    @DeleteMapping("/sources/{id}")
+    public ResponseEntity<Object> deleteSource(@PathVariable long id){
+        sourceService.deleteSourceById(id);
+        return new ResponseEntity<>(null, HttpStatus.OK);
+    }
+
     @GetMapping("/words")
     public List<Word> getWords(@RequestParam Long sourceId) {
         Source source = sourceService.getSourceById(sourceId);
@@ -62,6 +80,7 @@ public class Controller {
             throw new RequiredFieldMissingException("Required fields missing");
         }
     }
+
 }
 
 

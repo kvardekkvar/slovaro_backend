@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class SourceServiceImpl implements SourceService {
@@ -27,10 +28,31 @@ public class SourceServiceImpl implements SourceService {
     }
 
     @Override
-    public Source addSource(Source source){
+    public Source addSource(Source source) {
         if (sourceDAO.checkIfAlreadyExists(source)) {
             throw new DuplicateSourceException();
         }
         return sourceDAO.add(source).orElseThrow(() -> new DatabaseException("Database insert error. No rows were inserted"));
+    }
+
+    @Override
+    public void updateSource(Source newSource) {
+        Long sourceId = newSource.getId();
+        Source oldSource = sourceDAO.findById(sourceId).orElseThrow(() -> new SourceNotFoundException(sourceId));
+
+        if (!Objects.equals(newSource.getUserId(), oldSource.getUserId())) {
+            throw new RuntimeException("Только имя источника подлежит изменению.");
+        }
+
+        sourceDAO.update(newSource);
+    }
+
+    @Override
+    public void deleteSourceById(Long id) {
+        if (sourceDAO.findById(id).isPresent()) {
+            sourceDAO.deleteById(id);
+        } else {
+            throw new SourceNotFoundException(id);
+        }
     }
 }

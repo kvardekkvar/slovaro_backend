@@ -4,6 +4,7 @@ import com.example.slovaro_backend.entity.Source;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.query.MutationQuery;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -56,6 +57,26 @@ public class SourceDaoImpl implements SourceDAO {
                     .setParameter("name", source.getName());
             List<Source> results = query.getResultList();
             return results.size() > 0;
+        }
+    }
+
+    @Override
+    public void update(Source newSource) {
+        try (Session session = sessionFactory.openSession()) {
+            Transaction transaction = session.beginTransaction();
+            session.merge(newSource);
+            transaction.commit();
+        }
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        try (Session session = sessionFactory.openSession()) {
+            Transaction transaction = session.beginTransaction();
+            MutationQuery query = session.createMutationQuery("delete from Source where id=:id")
+                    .setParameter("id", id);
+            query.executeUpdate();
+            transaction.commit();
         }
     }
 }

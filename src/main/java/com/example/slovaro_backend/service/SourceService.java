@@ -11,4 +11,8 @@ public interface SourceService {
     Source getSourceById(Long id);
 
     Source addSource(Source source);
+
+    void updateSource(Source source);
+
+    void deleteSourceById(Long id);
 }
