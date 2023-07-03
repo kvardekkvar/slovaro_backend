@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "*")
+@CrossOrigin
 @RequestMapping("/slovaro")
 public class Controller {
     @Autowired
